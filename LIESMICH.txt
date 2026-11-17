@@ -1,0 +1,11 @@
+BA-Hakenfinder – privat erstellt, inoffiziell (kein Angebot von Barsch-Alarm oder Zeck)
+
+Inhalt:
+  index.html            die App mit allen Köderdaten
+  manifest.webmanifest  macht sie auf dem Home-Bildschirm zur App
+  sw.js                 Offline-Speicher (funktioniert nur über https)
+  icon-*.png, apple-touch-icon.png   App-Icons
+  *.woff2               Schriften (SIL Open Font License, LICENSE-*.txt liegen bei)
+
+Update: geänderte index.html hochladen UND in sw.js die VERSION hochzählen.
+Dann holt sich das iPhone die neue Version beim nächsten Start mit Netz.
