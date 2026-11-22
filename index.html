@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>BA-Hakenfinder</title>
+<title>Finde den Haken</title>
 <meta name="description" content="Zeck Barsch-Alarm Gummiköder und passende Haken – privat erstellt, inoffiziell.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -72,6 +72,7 @@
     display:flex;flex-direction:column;gap:18px;
   }
   header{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .sub{margin:3px 0 0;font-size:13px;color:var(--ink-3)}
   h1{font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:-.02em;margin:0}
   .src{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
   .label{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
@@ -119,7 +120,7 @@
   /* Wurfgewicht */
   .heads{display:flex;gap:6px;flex-wrap:wrap}
   .head{
-    flex:1 1 0;min-width:52px;font:600 14px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);
+    flex:1 1 calc(25% - 6px);min-width:52px;font:600 14px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);
     background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 4px;cursor:pointer;
   }
   .head[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
@@ -140,11 +141,11 @@
   .fld span{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
   .eqs{font-family:var(--f-mono);font-size:16px;color:var(--ink-3)}
   .presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-  .pre{flex:1 1 0;min-width:44px;font:600 13px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 2px;cursor:pointer}
+  .pre{flex:1 1 0;min-width:34px;font:600 13px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 2px;cursor:pointer}
   .pre[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
   /* Suchrichtung + Rückwärts-Suche */
-  .modes{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--surface-2);border-radius:12px;padding:4px}
-  .mode{font:600 15px/1 var(--f-body);color:var(--ink-2);background:transparent;border:0;border-radius:9px;padding:12px 6px;cursor:pointer}
+  .modes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;background:var(--surface-2);border-radius:12px;padding:4px}
+  .mode{font:600 14px/1.15 var(--f-body);color:var(--ink-2);background:transparent;border:0;border-radius:9px;padding:12px 6px;cursor:pointer}
   .mode[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
   .view{display:flex;flex-direction:column;gap:18px}
   .hero.off{background:var(--amber-soft)} .hero.off .k,.hero.off .v{color:var(--amber)}
@@ -155,6 +156,25 @@
   .hit .s{grid-column:1;font-family:var(--f-mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
   .hit .go{grid-row:1 / span 2;grid-column:2;font-family:var(--f-mono);font-size:18px;color:var(--ink-3)}
   .hint{margin:0;padding:12px 16px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2);background:var(--surface-2)}
+  /* Meine Box + Shop-Links */
+  .it{display:block}
+  .it + .it{margin-top:6px}
+  .tag{display:inline-block;font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.02em;padding:2px 6px;border-radius:5px;border:1px solid currentColor;margin-left:6px;white-space:nowrap;vertical-align:1px}
+  .tag.ok{color:var(--ok)} .tag.miss{color:var(--amber)}
+  .shop{display:inline-block;font-family:var(--f-mono);font-size:12px;font-weight:600;color:var(--ink-2);text-decoration:none;border:1px solid var(--line-strong);border-radius:6px;padding:3px 7px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+  .shop:hover{border-color:var(--moss);color:var(--moss)}
+  .hero .k .tag,.hero .k .shop{margin:6px 6px 0 0;letter-spacing:.02em;text-transform:none}
+  .hero .k .shop{color:inherit;border-color:currentColor}
+  .head.have{border-color:var(--moss);box-shadow:inset 0 -3px 0 var(--moss)}
+  .head.have[aria-pressed="true"]{box-shadow:none}
+  .bx-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px}
+  .bx-head .n{font-weight:600;font-size:16px}
+  .bx-head .c{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-left:6px}
+  .bx-sizes{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 14px}
+  .bx-sizes .size{flex:1 1 calc(25% - 6px);min-width:64px;padding:12px 2px;font-size:14px;white-space:nowrap}
+  .bx-sizes .size[aria-pressed="true"]{background:var(--moss-soft)}
+  .bx-group{display:flex;flex-direction:column;gap:10px}
+  .small{margin:6px 0 0;font-size:13px;color:var(--ink-3)}
   footer{font-size:12.5px;color:var(--ink-3)}
   @media (prefers-reduced-motion: no-preference){ .card,.calc{transition:opacity .15s} }
 </style>
@@ -163,13 +183,13 @@
 <body>
 <div class="app">
   <header>
-    <h1>BA-Hakenfinder</h1>
-    <span class="src">Zeck · 15.10.2026</span>
+    <div><h1>Finde den Haken</h1><p class="sub">für Zeck Barsch-Alarm · inoffiziell</p></div>
   </header>
 
   <div class="modes" role="group" aria-label="Suchrichtung">
     <button type="button" class="mode" id="mode-bait" aria-pressed="true">Köder → Haken</button>
     <button type="button" class="mode" id="mode-hook" aria-pressed="false">Haken → Köder</button>
+    <button type="button" class="mode" id="mode-box" aria-pressed="false">Meine Box</button>
   </div>
 
   <div class="view" id="view-bait">
@@ -188,6 +208,7 @@
     <section>
       <p class="label">Kopfgewicht</p>
       <div class="heads" id="heads" role="group" aria-label="Kopfgewicht"></div>
+      <p class="small" id="heads-hint" hidden>Grün unterstrichen = Rushka-Gewicht in Deiner Box.</p>
     </section>
 
     <section class="calc" id="calc" aria-live="polite"></section>
@@ -207,6 +228,12 @@
     <section class="card" id="hlist" aria-live="polite"></section>
   </div>
 
+  <div class="view" id="view-box" hidden>
+    <p class="small" style="margin:0">Tippe an, was Du hast. In der Köder-Ansicht steht dann bei jedem Haken und Kopf <b>✓ Box</b> oder <b>fehlt</b>.</p>
+    <div id="box"></div>
+    <p class="small">Die Box wird nur auf diesem Gerät gespeichert. Die App auf dem Home-Bildschirm und Safari haben getrennte Speicher, also am besten nur eins davon pflegen.</p>
+  </div>
+
   <section>
     <p class="label">Umrechner Inch · cm</p>
     <div class="conv">
@@ -218,7 +245,7 @@
     <div class="presets" id="presets" role="group" aria-label="Gängige Ködergrößen in Inch" style="margin-top:8px"></div>
   </section>
 
-  <footer>Haken und Köpfe 1:1 aus den Zeck-Produkttabellen. Wurfgewicht = Kopf + Köder. 1 Inch = 2,54 cm.<br>Privat erstellt, inoffiziell – kein Angebot von Barsch-Alarm oder Zeck.<br>Version 2026-11-17-1</footer>
+  <footer>Haken und Köpfe 1:1 aus den Zeck-Produkttabellen (Stand 15.10.2026). Shop-Größen und Ruten geprüft am 22.11.2026. Wurfgewicht = Kopf + Köder. 1 Inch = 2,54 cm.<br>Privat erstellt, inoffiziell – kein Angebot von Barsch-Alarm oder Zeck.<br>Version 2026-11-22-2</footer>
 </div>
 
 <script>
@@ -234,7 +261,8 @@ const D = [
     {s:"12 cm", g:9, n:3, r:null, o:["Wide Gap","#5/0"], c:"#4/0", j:"Finesse Round #3/0", m:"Rubber Jig #3/0", k:4},
   ]},
   { fam:"Shaky Stick", desc:"Pintail", sizes:[
-    {s:"8 cm", g:2, n:9, r:"#4", o:["Finesse Screw","#2"], c:null, j:"Finesse Round #2", m:"Dart Jig #2 · Rubber Jig #1/0", k:2},
+    {s:"8 cm", g:2, n:9, r:"#4", o:["Finesse Screw","#2"], c:null, j:"Finesse Round #2", m:"Dart Jig #2 · Rubber Jig #1/0", k:2,
+      x:"Dart Jig #2 nennt Zeck hier, den Dart Jig gibt es im Shop aber nur in #1, #1/0 und #3/0."},
     {s:"10 cm", g:4, n:7, r:"#1/0", o:["Finesse Screw","#1/0"], c:null, j:"Finesse Round #1/0", m:"Dart Jig #1/0", k:3},
     {s:"12 cm", g:7, n:5, r:"#3/0", o:["Finesse Screw","#4/0"], c:"#4/0", j:"Jig Head Round #3/0", m:"Dart Jig Head #3/0 · Skirted Jig #4/0 · Bladed Jig #4/0", k:4,
       x:"Bei Zeck nicht mehr im Shop, bei Händlern noch erhältlich. Werte aus Zecks eigener Liste."},
@@ -247,41 +275,95 @@ const D = [
   { fam:"Edward", desc:"Craw", sizes:[
     {s:"4,5 cm", g:2, n:6, r:"#4", o:["Finesse Screw","#2"], c:null, j:"Finesse Round #2", m:"Rubber Jig #2", k:2},
     {s:"6 cm", g:4.5, n:4, r:"#3/0", o:["Finesse Screw","#2"], c:"#3/0", j:"Finesse Round #1/0", m:"Rubber Jig #1/0 · Skirted Jig #3/0", k:4,
-      x:"Rushka #3/0, Offset aber nur #2 – so steht es bei Zeck. Ein Tippfehler (#2/0) ist möglich, aber nicht belegt."},
+      x:"Rushka #3/0, Offset aber nur #2 – so steht es bei Zeck. Ein Tippfehler (#2/0) ist möglich, aber nicht belegt. Den Skirted Jig #3/0 nennt Zeck hier noch, führt aber nur noch den Rubber Jig."},
     {s:"7,5 cm", g:8.5, n:4, r:null, o:["Finesse Screw","#4/0"], c:"#4/0", j:"Finesse Round #3/0", m:"Rubber Jig #3/0", k:4},
   ]},
   { fam:"Boggy", desc:"Wurm · D-Tail", sizes:[
     {s:"7,5 cm", g:2, n:6, r:"#1/0", o:["Finesse Screw","#2/0"], c:"#1/0", j:"Finesse Round #2", m:"Dart Jig #1/0 · Rubber Jig #1", k:3,
-      x:"Rubber Jig #1 nennt Zeck hier, führt ihn im Shop aber nur in #2, #1/0 und #3/0."},
+      x:"In Zecks Tabelle steht Rubber Jig #1, verlinkt ist darunter aber der Rubber Jig #1/0. Einen #1 gibt es nicht – gemeint ist vermutlich #1/0."},
     {s:"10 cm", g:4.5, n:4, r:"#3/0", o:["Finesse Screw","#2/0"], c:"#3/0", j:"Finesse Round #3/0", m:"Dart Jig #3/0 · Rubber Jig #3/0", k:4},
     {s:"12,5 cm", g:9, n:4, r:null, o:["Finesse Screw","#4/0"], c:"#4/0", j:"Jig Head #4/0", m:null, k:4},
   ]},
 ];
-const HEADS = [3, 5, 7.5, 10, 12.5, 15];
+const HEADS = [3, 5, 7.5, 10, 12.5, 15, 17.5, 20];   // Rushka-Gewichte laut Zeck-Shop
 const fmt = n => String(n).replace(".", ",");
 
+/* Zeck-Shop: Größen und Links, geprüft am 22.11.2026 */
+const SHOP = "https://www.zeck-fishing.com";
+const BOX = [
+  {grp:"Haken", items:[
+    {id:"rh", name:"Rushka Hook", sizes:["#8","#4","#1/0","#3/0"], url:"/rushka-hook-9631310002"},
+    {id:"fs", name:"Finesse Screw Hook", sizes:["#2","#1/0","#2/0","#4/0"], url:"/finesse-screw-hook-9629310008"},
+    {id:"wg", name:"Wide Gap Screw Hook", sizes:["#4","#2","#1","#1/0","#2/0","#3/0","#4/0","#5/0"], url:"/wide-gap-screw-hook-9630210274"},
+    {id:"ch", name:"Chebu Hook", sizes:["#1/0","#3/0","#4/0"], url:"/chebu-hook-8860210228"},
+  ]},
+  {grp:"Rushka-Köpfe", items:[
+    {id:"rb", name:"Rushka (Blei)", sizes:HEADS.map(h => fmt(h) + " g"), url:"/rushka-9747210308"},
+  ]},
+  {grp:"Jigköpfe", items:[
+    {id:"fr", tok:"Finesse Round", name:"Finesse Round Jig", sizes:["#2","#1","#1/0","#3/0"], url:"/search?sSearch=Finesse+Round+Jig",
+      urls:{"#2":"/finesse-round-jig-2-9957210391","#1":"/finesse-round-jig-1-9960210397","#1/0":"/finesse-round-jig-1/0-9961210403","#3/0":"/finesse-round-jig-3/0-9962210410"}},
+    {id:"rj", tok:"Rubber Jig", name:"Rubber Jig", sizes:["#2","#1/0","#3/0"], url:"/search?sSearch=Rubber+Jig",
+      urls:{"#2":"/rubber-jig-2-9956210355","#1/0":"/rubber-jig-1/0-9958210367","#3/0":"/rubber-jig-3/0-9959210379"}},
+    {id:"nj", tok:"Ned Jig", name:"Ned Jig", sizes:["#2","#1","#1/0","#3/0"], url:"/ned-jig-9965210430"},
+    {id:"dj", tok:"Dart Jig", name:"Dart Jig", sizes:["#1","#1/0","#3/0"], url:"/dart-jig-9964210418"},
+    {id:"jh", tok:"Jig Head", name:"Jig Head", sizes:["#1/0","#3/0","#4/0"], url:"/search?sSearch=Jig+Head",
+      urls:{"#1/0":"/jig-head-1/0-9350210250","#3/0":"/jig-head-3/0-9351210256","#4/0":"/jig-head-4/0-9352210264"}},
+  ]},
+];
+const SER = Object.fromEntries(BOX.flatMap(g => g.items).map(s => [s.id, s]));
+const TOK = Object.values(SER).filter(s => s.tok);
+
 const HT = [
-  {chip:"Rushka", name:"Rushka Hook", cls:"", get:z => z.r, miss:"Kein Rushka laut Zeck"},
-  {chip:"Finesse Screw", name:"Finesse Screw Hook", cls:"off", get:z => z.o && z.o[0]==="Finesse Screw" ? z.o[1] : null, hint:"Zecks Offset für Shaky Stick, Shaky Sneaker, Edward und Boggy."},
-  {chip:"Wide Gap", name:"Wide Gap Screw Hook", cls:"off", get:z => z.o && z.o[0]==="Wide Gap" ? z.o[1] : null, hint:"Zecks Offset für Sexy Swimmer und Finesse Goby – für keinen anderen BA-Köder."},
-  {chip:"Chebu", name:"Chebu Hook", cls:"ch", get:z => z.c, miss:"Kein Chebu laut Zeck"},
+  {chip:"Rushka", name:"Rushka Hook", box:"rh", cls:"", get:z => z.r, miss:"Kein Rushka laut Zeck"},
+  {chip:"Finesse Screw", name:"Finesse Screw Hook", box:"fs", cls:"off", get:z => z.o && z.o[0]==="Finesse Screw" ? z.o[1] : null, hint:"Zecks Offset für Shaky Stick, Shaky Sneaker, Edward und Boggy."},
+  {chip:"Wide Gap", name:"Wide Gap Screw Hook", box:"wg", cls:"off", get:z => z.o && z.o[0]==="Wide Gap" ? z.o[1] : null, hint:"Zecks Offset für Sexy Swimmer und Finesse Goby – für keinen anderen BA-Köder."},
+  {chip:"Chebu", name:"Chebu Hook", box:"ch", cls:"ch", get:z => z.c, miss:"Kein Chebu laut Zeck"},
+];
+const RODS = [
+  {n:"BA Spin L 201 | 10", r:"Twitch & Play · ideal 3–10 g · max. 14 g", lo:3, hi:10, max:14},
+  {n:"BA Spin M 238 | 21", r:"Search & Jig · ideal 7–21 g · max. 26 g", lo:7, hi:21, max:26},
+  {n:"Akilas 90 H", r:"10–45 g", lo:10, hi:45, max:45},
 ];
 const ALL = D.flatMap((d,fi) => d.sizes.map((z,si) => ({fi, si, fam:d.fam, z})));
 const rank = s => { const m = String(s).match(/#(\d+)(\/0)?/); return m ? (m[2] ? +m[1] : -m[1]) : 0; };
 const sizesFor = t => [...new Set(ALL.map(a => HT[t].get(a.z)).filter(Boolean))].sort((a,b) => rank(a) - rank(b));
 
-let st = {f:0, s:0, h:1, mode:"bait", ht:0, hs:null};
+let st = {f:0, s:0, h:1, mode:"bait", ht:0, hs:null, box:[]};
 try {
   const saved = JSON.parse(localStorage.getItem("ba-hakenfinder") || "null");
   if (saved && D[saved.f] && D[saved.f].sizes[saved.s] && HEADS[saved.h] != null) {
     st = {...st, ...saved};
-    if (st.mode !== "hook") st.mode = "bait";
+    if (!["bait","hook","box"].includes(st.mode)) st.mode = "bait";
     if (!HT[st.ht]) st.ht = 0;
+    if (!Array.isArray(st.box)) st.box = [];
   }
 } catch(e) {}
 const save = () => { try { localStorage.setItem("ba-hakenfinder", JSON.stringify(st)); } catch(e) {} };
 
 const $ = id => document.getElementById(id);
+
+/* Box-Helfer */
+const key = (id, size) => id + ":" + size;
+const has = (id, size) => st.box.includes(key(id, size));
+const boxOn = () => st.box.length > 0;
+const inShop = (id, size) => SER[id].sizes.includes(size);
+const urlFor = (id, size) => SHOP + ((SER[id].urls && SER[id].urls[size]) || SER[id].url);
+const shopLink = (id, size) => inShop(id, size)
+  ? `<a class="shop" href="${urlFor(id, size)}" target="_blank" rel="noopener" aria-label="${SER[id].name} ${size} im Zeck-Shop">Shop ↗</a>` : "";
+const tag = (id, size) => !boxOn() || !inShop(id, size) ? ""
+  : has(id, size) ? '<span class="tag ok">✓ Box</span>' : '<span class="tag miss">fehlt</span>';
+const item = (label, id, size) => `<span class="it">${label} <b>${size}</b>${tag(id, size)}${shopLink(id, size)}</span>`;
+/* "Finesse Round #1 · Rubber Jig #2" → einzelne Einträge mit Box-Status und Link */
+function items(text){
+  return text.split(" · ").map(t => {
+    for (const s of TOK) {
+      const m = t.match(new RegExp("^" + s.tok + " (#[0-9/]+)$"));
+      if (m) return item(s.tok, s.id, m[1]);
+    }
+    return `<span class="it">${t}</span>`;
+  }).join("");
+}
 
 function btn(cls, text, pressed, onClick, id){
   const b = document.createElement("button");
@@ -296,7 +378,12 @@ function render(){
 
   $("fams").replaceChildren(...D.map((d,i) => btn("chip", d.fam, i===st.f, () => { st.f=i; st.s=0; save(); render(); }, "fam-"+i)));
   $("sizes").replaceChildren(...fam.sizes.map((x,i) => btn("size", x.s, i===st.s, () => { st.s=i; save(); render(); }, "size-"+i)));
-  $("heads").replaceChildren(...HEADS.map((h,i) => btn("head", fmt(h)+" g", i===st.h, () => { st.h=i; save(); render(); }, "head-"+i)));
+  $("heads").replaceChildren(...HEADS.map((h,i) => {
+    const b = btn("head", fmt(h)+" g", i===st.h, () => { st.h=i; save(); render(); }, "head-"+i);
+    if (has("rb", fmt(h)+" g")) b.classList.add("have");
+    return b;
+  }));
+  $("heads-hint").hidden = !st.box.some(k => k.startsWith("rb:"));
 
   const row = (cls, k, v) => `<div class="row ${cls}"><span class="k">${k}</span><span class="v">${v}</span></div>`;
   const dash = '<span class="dim">von Zeck nicht angegeben</span>';
@@ -308,23 +395,38 @@ function render(){
       <span class="klasse">Klasse ${z.k}</span>
     </div>
     ${z.r
-      ? `<div class="hero"><span class="k">Rushka Hook</span><span class="v">${z.r}</span></div>`
+      ? `<div class="hero"><span class="k">Rushka Hook<br>${tag("rh", z.r)}${shopLink("rh", z.r)}</span><span class="v">${z.r}</span></div>`
       : `<div class="hero none"><span class="k">Rushka Hook</span><span class="v">kein Rushka laut Zeck</span></div>`}
     <div class="rows">
-      ${row("off", "Offset", z.o ? `${z.o[0]} <b>${z.o[1]}</b>` : dash)}
-      ${row("ch", "Chebu", z.c ? `Chebu Hook <b>${z.c}</b>` : dash)}
-      ${row("", "Jigkopf", z.j)}
-      ${row("", "Weitere", z.m || '<span class="dim">—</span>')}
+      ${row("off", "Offset", z.o ? item(z.o[0], z.o[0]==="Wide Gap" ? "wg" : "fs", z.o[1]) : dash)}
+      ${row("ch", "Chebu", z.c ? item("Chebu Hook", "ch", z.c) : dash)}
+      ${row("", "Jigkopf", items(z.j))}
+      ${row("", "Weitere", z.m ? items(z.m) : '<span class="dim">—</span>')}
     </div>
     ${notes}`;
 
   const head = HEADS[st.h], tot = Math.round((head + z.g) * 10) / 10;
-  const L = tot <= 10 ? ["ok","ideal"] : tot <= 14 ? ["warn","Reserve"] : ["bad","zu schwer"];
-  const H = tot < 10 ? ["warn","zu leicht"] : tot <= 45 ? ["ok","passt"] : ["bad","zu schwer"];
+  const verdict = r => tot < r.lo ? ["warn","zu leicht"] : tot <= r.hi ? ["ok","ideal"] : tot <= r.max ? ["warn","Reserve"] : ["bad","zu schwer"];
   $("calc").innerHTML = `
     <div class="sum"><span class="eq">${fmt(head)} g Kopf + ${fmt(z.g)} g Köder</span><span class="tot">${fmt(tot)} g</span></div>
-    <div class="rod"><div><div class="n">BA Spin L 201 | 10</div><div class="r">ideal 3–10 g · max. 14 g</div></div><span class="pill ${L[0]}">${L[1]}</span></div>
-    <div class="rod"><div><div class="n">Akilas 90 H</div><div class="r">10–45 g</div></div><span class="pill ${H[0]}">${H[1]}</span></div>`;
+    ${RODS.map(r => { const v = verdict(r); return `<div class="rod"><div><div class="n">${r.n}</div><div class="r">${r.r}</div></div><span class="pill ${v[0]}">${v[1]}</span></div>`; }).join("")}`;
+}
+
+function renderBox(){
+  $("box").innerHTML = BOX.map(g => `
+    <section class="bx-group">
+      <p class="label" style="margin:10px 0 0">${g.grp}</p>
+      ${g.items.map(s => `
+        <div class="card">
+          <div class="bx-head">
+            <div><span class="n">${s.name}</span><span class="c">${s.sizes.filter(x => has(s.id, x)).length}/${s.sizes.length}</span></div>
+            <a class="shop" href="${SHOP + s.url}" target="_blank" rel="noopener" aria-label="${s.name} im Zeck-Shop">Shop ↗</a>
+          </div>
+          <div class="bx-sizes" role="group" aria-label="${s.name}">
+            ${s.sizes.map(x => `<button type="button" class="size" data-k="${key(s.id, x)}" aria-pressed="${has(s.id, x)}">${has(s.id, x) ? "✓ " : ""}${x}</button>`).join("")}
+          </div>
+        </div>`).join("")}
+    </section>`).join("");
 }
 function renderHook(){
   const t = HT[st.ht], sz = sizesFor(st.ht);
@@ -336,7 +438,7 @@ function renderHook(){
   const hits = ALL.filter(a => t.get(a.z) === st.hs);
   const misses = t.miss ? ALL.filter(a => !t.get(a.z)) : [];
   $("hlist").innerHTML = `
-    <div class="hero ${t.cls}"><span class="k">${t.name}<span class="cnt">${hits.length} Köder</span></span><span class="v">${st.hs}</span></div>
+    <div class="hero ${t.cls}"><span class="k">${t.name}<span class="cnt">${hits.length} Köder</span>${tag(t.box, st.hs)}${shopLink(t.box, st.hs)}</span><span class="v">${st.hs}</span></div>
     ${hits.map(a => `<button type="button" class="hit" data-fi="${a.fi}" data-si="${a.si}">
       <span class="t">${a.fam} ${a.z.s}</span><span class="go" aria-hidden="true">›</span>
       <span class="s">${fmt(a.z.g)} g · Klasse ${a.z.k}</span></button>`).join("")}
@@ -345,16 +447,23 @@ function renderHook(){
 }
 
 function renderAll(){
-  const hook = st.mode === "hook";
-  $("view-bait").hidden = hook;
-  $("view-hook").hidden = !hook;
-  $("mode-bait").setAttribute("aria-pressed", hook ? "false" : "true");
-  $("mode-hook").setAttribute("aria-pressed", hook ? "true" : "false");
+  for (const m of ["bait","hook","box"]) {
+    $("view-" + m).hidden = st.mode !== m;
+    $("mode-" + m).setAttribute("aria-pressed", st.mode === m ? "true" : "false");
+  }
   render();
   renderHook();
+  renderBox();
 }
 
 $("mode-bait").addEventListener("click", () => { st.mode = "bait"; save(); renderAll(); });
+$("mode-box").addEventListener("click", () => { st.mode = "box"; save(); renderAll(); });
+$("box").addEventListener("click", e => {
+  const b = e.target.closest("button[data-k]"); if (!b) return;
+  const k = b.dataset.k;
+  st.box = st.box.includes(k) ? st.box.filter(x => x !== k) : [...st.box, k];
+  save(); renderAll();
+});
 $("mode-hook").addEventListener("click", () => {
   if (st.mode !== "hook") { const z = D[st.f].sizes[st.s]; if (z.r) { st.ht = 0; st.hs = z.r; } }
   st.mode = "hook"; save(); renderAll();
