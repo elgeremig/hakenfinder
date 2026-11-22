@@ -1,5 +1,5 @@
 /* BA-Hakenfinder – Offline-Speicher. Bei jedem Update VERSION hochzählen. */
-const VERSION = "2026-11-22-4";
+const VERSION = "2026-11-22-5";
 const CACHE = "hakenfinder-" + VERSION;
 const FILES = [
   "./",

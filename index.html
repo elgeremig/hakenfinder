@@ -177,6 +177,14 @@
   .need{padding:12px 16px;border-top:1px solid var(--line)}
   .need .f{display:block;margin-top:3px;font-size:13px;color:var(--ink-3)}
   .need b{font-family:var(--f-mono);font-weight:600}
+  .pasterow{display:flex;gap:8px;margin-top:8px}
+  .pasterow input{flex:1;min-width:0;font:16px/1.2 var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;outline:none}
+  .pasterow input:focus{border-color:var(--moss);box-shadow:inset 0 0 0 1px var(--moss)}
+  .importbar{background:var(--moss-soft);border:1px solid var(--moss);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .importbar p{margin:0}
+  .importbar .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .chip.go{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+  #share-msg{margin-left:8px}
   footer{font-size:12.5px;color:var(--ink-3)}
   @media (prefers-reduced-motion: no-preference){ .card,.calc{transition:opacity .15s} }
 </style>
@@ -184,6 +192,7 @@
 
 <body>
 <div class="app">
+  <div class="importbar" id="import" hidden></div>
   <header>
     <div><h1>Finde den Haken</h1><p class="sub">für Zeck Barsch-Alarm · inoffiziell</p></div>
   </header>
@@ -234,7 +243,20 @@
     <p class="small" style="margin:0">Tippe an, welche Köder, Haken und Köpfe Du hast. In der Köder-Ansicht steht dann bei jedem Haken und Kopf <b>✓ Box</b> oder <b>fehlt</b>, Deine Köder bekommen einen grünen Punkt.</p>
     <div id="box"></div>
     <div id="shoplist"></div>
-    <p class="small">Die Box wird nur auf diesem Gerät gespeichert. Die App auf dem Home-Bildschirm und Safari haben getrennte Speicher, also am besten nur eins davon pflegen.</p>
+    <section class="bx-group">
+      <p class="label" style="margin:10px 0 0">Box sichern &amp; übertragen</p>
+      <div class="card">
+        <div class="need">
+          <button type="button" class="chip sm" id="share-btn">Box teilen</button><span class="small" id="share-msg" aria-live="polite"></span>
+          <span class="f">Erzeugt einen Link mit Deiner Box. Schick ihn Dir selbst (AirDrop, Notiz, Mail): zum Übertragen auf ein anderes Gerät oder als Sicherung.</span>
+        </div>
+        <div class="need">
+          <label class="small" for="paste" style="margin:0">Link einfügen, z. B. in der App vom Home-Bildschirm</label>
+          <div class="pasterow"><input id="paste" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://elgeremig.github.io/hakenfinder/#box=…" aria-label="Box-Link einfügen"><button type="button" class="chip sm" id="paste-btn">Laden</button></div>
+        </div>
+      </div>
+    </section>
+    <p class="small">Die Box wird nur auf diesem Gerät gespeichert. Die App auf dem Home-Bildschirm und Safari haben getrennte Speicher – mit „Box teilen“ überträgst Du sie von einem zum anderen.</p>
   </div>
 
   <section>
@@ -248,7 +270,7 @@
     <div class="presets" id="presets" role="group" aria-label="Gängige Ködergrößen in Inch" style="margin-top:8px"></div>
   </section>
 
-  <footer>Haken und Köpfe 1:1 aus den Zeck-Produkttabellen (Stand 15.10.2026). Shop-Größen und Ruten geprüft am 22.11.2026. Wurfgewicht = Kopf + Köder. 1 Inch = 2,54 cm.<br>Privat erstellt, inoffiziell – kein Angebot von Barsch-Alarm oder Zeck.<br>Version 2026-11-22-4</footer>
+  <footer>Haken und Köpfe 1:1 aus den Zeck-Produkttabellen (Stand 15.10.2026). Shop-Größen und Ruten geprüft am 22.11.2026. Wurfgewicht = Kopf + Köder. 1 Inch = 2,54 cm.<br>Privat erstellt, inoffiziell – kein Angebot von Barsch-Alarm oder Zeck.<br>Version 2026-11-22-5</footer>
 </div>
 
 <script>
@@ -528,6 +550,51 @@ $("mode-box").addEventListener("click", () => { st.mode = "box"; save(); renderA
 $("shoplist").addEventListener("click", e => {
   if (!e.target.closest("#all-toggle")) return;
   st.all = !st.all; save(); renderShop();
+});
+/* Box teilen: Box steckt im Link (#box=…), kein Server */
+const APP_URL = "https://elgeremig.github.io/hakenfinder/";
+const VALID = new Set([
+  ...D.flatMap(d => d.sizes.map(x => baitKey(d.fam, x.s))),
+  ...Object.values(SER).flatMap(sr => sr.sizes.map(x => key(sr.id, x))),
+]);
+const b64 = str => btoa(String.fromCharCode(...new TextEncoder().encode(str))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const unb64 = str => new TextDecoder().decode(Uint8Array.from(atob(str.replace(/-/g,"+").replace(/_/g,"/")), c => c.charCodeAt(0)));
+const boxLink = () => APP_URL + "#box=" + b64(st.box.join("\n"));
+function parseBox(text){
+  const m = String(text).match(/box=([A-Za-z0-9_-]+)/);
+  if (!m) return null;
+  try { const keys = unb64(m[1]).split("\n").filter(k => VALID.has(k)); return keys.length ? keys : null; } catch(e) { return null; }
+}
+function offerImport(keys){
+  const nb = keys.filter(k => k.startsWith("k:")).length, ng = keys.length - nb;
+  const el = $("import");
+  el.innerHTML = `<p><b>Box aus Link übernehmen?</b><br><span class="small">${nb} Köder, ${ng} Haken und Köpfe. Ersetzt die Box auf diesem Gerät.</span></p>
+    <div class="btns"><button type="button" class="chip sm go" id="imp-yes">Übernehmen</button><button type="button" class="chip sm" id="imp-no">Abbrechen</button></div>`;
+  el.hidden = false;
+  $("imp-yes").onclick = () => { st.box = keys; st.mode = "box"; save(); el.hidden = true; renderAll(); window.scrollTo({top:0}); };
+  $("imp-no").onclick = () => { el.hidden = true; };
+  window.scrollTo({top:0});
+}
+if (location.hash.includes("box=")) {
+  const keys = parseBox(location.hash);
+  try { history.replaceState(null, "", location.pathname + location.search); } catch(e) {}
+  if (keys) offerImport(keys);
+}
+$("share-btn").addEventListener("click", async () => {
+  const msg = $("share-msg"); msg.textContent = "";
+  if (!st.box.length) { msg.textContent = "Deine Box ist noch leer."; return; }
+  const url = boxLink();
+  if (navigator.share) {
+    try { await navigator.share({title:"Meine Box – Finde den Haken", url}); msg.textContent = ""; return; }
+    catch(e) { if (e && e.name === "AbortError") return; }
+  }
+  try { await navigator.clipboard.writeText(url); msg.textContent = "Link kopiert."; }
+  catch(e) { $("paste").value = url; $("paste").select(); msg.textContent = "Link unten markiert – kopieren."; }
+});
+$("paste-btn").addEventListener("click", () => {
+  const keys = parseBox($("paste").value);
+  if (keys) { $("paste").value = ""; offerImport(keys); }
+  else $("share-msg").textContent = "Kein gültiger Box-Link.";
 });
 $("box").addEventListener("click", e => {
   const b = e.target.closest("button[data-k]"); if (!b) return;
