@@ -99,9 +99,9 @@
   .bait{font-family:var(--f-display);font-weight:700;font-size:19px;letter-spacing:-.01em}
   .meta{font-family:var(--f-mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;margin-top:2px}
   .klasse{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--ink-2);background:var(--surface-2);border-radius:6px;padding:5px 8px;white-space:nowrap}
-  .hero{padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--moss-soft)}
-  .hero .k{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--moss)}
-  .hero .v{font-family:var(--f-display);font-weight:700;font-size:44px;line-height:1;color:var(--moss);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .hero{padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface-2)}
+  .hero .k{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+  .hero .v{font-family:var(--f-display);font-weight:700;font-size:44px;line-height:1;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
   .hero.none{background:var(--surface-2)}
   .hero.none .k,.hero.none .v{color:var(--ink-3)}
   .hero.none .v{font-size:18px;font-family:var(--f-body);font-weight:600;letter-spacing:0;text-align:right;max-width:60%}
@@ -111,8 +111,6 @@
   .row .k{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
   .row .v{font-size:16px;min-width:0}
   .row .v b{font-family:var(--f-mono);font-weight:600;font-variant-numeric:tabular-nums}
-  .row.off .v b{color:var(--amber)}
-  .row.ch .v b{color:var(--steel)}
   .row .v .dim{color:var(--ink-3)}
   .note{margin:0;padding:12px 16px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2);background:var(--amber-soft)}
   .note + .note{border-top:1px solid var(--line)}
@@ -148,8 +146,6 @@
   .mode{font:600 14px/1.15 var(--f-body);color:var(--ink-2);background:transparent;border:0;border-radius:9px;padding:12px 6px;cursor:pointer}
   .mode[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
   .view{display:flex;flex-direction:column;gap:18px}
-  .hero.off{background:var(--amber-soft)} .hero.off .k,.hero.off .v{color:var(--amber)}
-  .hero.ch{background:var(--steel-soft)} .hero.ch .k,.hero.ch .v{color:var(--steel)}
   .hero .cnt{font-family:var(--f-mono);font-size:12px;font-weight:600;margin-top:4px;display:block}
   .hit{display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:center;width:100%;text-align:left;background:transparent;border:0;border-top:1px solid var(--line);padding:13px 16px;color:var(--ink);font:inherit;cursor:pointer}
   .hit .t{font-weight:600;font-size:16px}
@@ -175,6 +171,12 @@
   .bx-sizes .size[aria-pressed="true"]{background:var(--moss-soft)}
   .bx-group{display:flex;flex-direction:column;gap:10px}
   .small{margin:6px 0 0;font-size:13px;color:var(--ink-3)}
+  .mine::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);margin-left:7px;vertical-align:2px}
+  .chip.sm{padding:8px 12px;font-size:13px}
+  .grp-h{margin:0;padding:10px 16px 8px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  .need{padding:12px 16px;border-top:1px solid var(--line)}
+  .need .f{display:block;margin-top:3px;font-size:13px;color:var(--ink-3)}
+  .need b{font-family:var(--f-mono);font-weight:600}
   footer{font-size:12.5px;color:var(--ink-3)}
   @media (prefers-reduced-motion: no-preference){ .card,.calc{transition:opacity .15s} }
 </style>
@@ -229,8 +231,9 @@
   </div>
 
   <div class="view" id="view-box" hidden>
-    <p class="small" style="margin:0">Tippe an, was Du hast. In der Köder-Ansicht steht dann bei jedem Haken und Kopf <b>✓ Box</b> oder <b>fehlt</b>.</p>
+    <p class="small" style="margin:0">Tippe an, welche Köder, Haken und Köpfe Du hast. In der Köder-Ansicht steht dann bei jedem Haken und Kopf <b>✓ Box</b> oder <b>fehlt</b>, Deine Köder bekommen einen grünen Punkt.</p>
     <div id="box"></div>
+    <div id="shoplist"></div>
     <p class="small">Die Box wird nur auf diesem Gerät gespeichert. Die App auf dem Home-Bildschirm und Safari haben getrennte Speicher, also am besten nur eins davon pflegen.</p>
   </div>
 
@@ -245,7 +248,7 @@
     <div class="presets" id="presets" role="group" aria-label="Gängige Ködergrößen in Inch" style="margin-top:8px"></div>
   </section>
 
-  <footer>Haken und Köpfe 1:1 aus den Zeck-Produkttabellen (Stand 15.10.2026). Shop-Größen und Ruten geprüft am 22.11.2026. Wurfgewicht = Kopf + Köder. 1 Inch = 2,54 cm.<br>Privat erstellt, inoffiziell – kein Angebot von Barsch-Alarm oder Zeck.<br>Version 2026-11-22-2</footer>
+  <footer>Haken und Köpfe 1:1 aus den Zeck-Produkttabellen (Stand 15.10.2026). Shop-Größen und Ruten geprüft am 22.11.2026. Wurfgewicht = Kopf + Köder. 1 Inch = 2,54 cm.<br>Privat erstellt, inoffiziell – kein Angebot von Barsch-Alarm oder Zeck.<br>Version 2026-11-22-4</footer>
 </div>
 
 <script>
@@ -329,7 +332,7 @@ const ALL = D.flatMap((d,fi) => d.sizes.map((z,si) => ({fi, si, fam:d.fam, z})))
 const rank = s => { const m = String(s).match(/#(\d+)(\/0)?/); return m ? (m[2] ? +m[1] : -m[1]) : 0; };
 const sizesFor = t => [...new Set(ALL.map(a => HT[t].get(a.z)).filter(Boolean))].sort((a,b) => rank(a) - rank(b));
 
-let st = {f:0, s:0, h:1, mode:"bait", ht:0, hs:null, box:[]};
+let st = {f:0, s:0, h:1, mode:"bait", ht:0, hs:null, box:[], all:false};
 try {
   const saved = JSON.parse(localStorage.getItem("ba-hakenfinder") || "null");
   if (saved && D[saved.f] && D[saved.f].sizes[saved.s] && HEADS[saved.h] != null) {
@@ -346,7 +349,10 @@ const $ = id => document.getElementById(id);
 /* Box-Helfer */
 const key = (id, size) => id + ":" + size;
 const has = (id, size) => st.box.includes(key(id, size));
-const boxOn = () => st.box.length > 0;
+const boxOn = () => st.box.some(k => !k.startsWith("k:"));   // Haken/Köpfe abgehakt?
+const baitKey = (fam, size) => key("k", fam + "|" + size);
+const mine = a => has("k", a.fam + "|" + a.z.s);
+const anyMine = () => st.box.some(k => k.startsWith("k:"));
 const inShop = (id, size) => SER[id].sizes.includes(size);
 const urlFor = (id, size) => SHOP + ((SER[id].urls && SER[id].urls[size]) || SER[id].url);
 const shopLink = (id, size) => inShop(id, size)
@@ -376,8 +382,16 @@ function btn(cls, text, pressed, onClick, id){
 function render(){
   const fam = D[st.f], z = fam.sizes[st.s];
 
-  $("fams").replaceChildren(...D.map((d,i) => btn("chip", d.fam, i===st.f, () => { st.f=i; st.s=0; save(); render(); }, "fam-"+i)));
-  $("sizes").replaceChildren(...fam.sizes.map((x,i) => btn("size", x.s, i===st.s, () => { st.s=i; save(); render(); }, "size-"+i)));
+  $("fams").replaceChildren(...D.map((d,i) => {
+    const b = btn("chip", d.fam, i===st.f, () => { st.f=i; st.s=0; save(); render(); }, "fam-"+i);
+    if (d.sizes.some(x => has("k", d.fam + "|" + x.s))) b.classList.add("mine");
+    return b;
+  }));
+  $("sizes").replaceChildren(...fam.sizes.map((x,i) => {
+    const b = btn("size", x.s, i===st.s, () => { st.s=i; save(); render(); }, "size-"+i);
+    if (has("k", fam.fam + "|" + x.s)) b.classList.add("mine");
+    return b;
+  }));
   $("heads").replaceChildren(...HEADS.map((h,i) => {
     const b = btn("head", fmt(h)+" g", i===st.h, () => { st.h=i; save(); render(); }, "head-"+i);
     if (has("rb", fmt(h)+" g")) b.classList.add("have");
@@ -412,8 +426,56 @@ function render(){
     ${RODS.map(r => { const v = verdict(r); return `<div class="rod"><div><div class="n">${r.n}</div><div class="r">${r.r}</div></div><span class="pill ${v[0]}">${v[1]}</span></div>`; }).join("")}`;
 }
 
+/* Was braucht ein Köder? A = Rushka + Offset, B = alles, was Zeck nennt */
+function needs(a, all){
+  const z = a.z, n = [];
+  if (z.r) n.push(["rh", z.r]);
+  if (z.o) n.push([z.o[0]==="Wide Gap" ? "wg" : "fs", z.o[1]]);
+  if (all) {
+    if (z.c) n.push(["ch", z.c]);
+    for (const t of [z.j, z.m].filter(Boolean).flatMap(x => x.split(" · ")))
+      for (const s of TOK) { const m = t.match(new RegExp("^" + s.tok + " (#[0-9/]+)$")); if (m) n.push([s.id, m[1]]); }
+  }
+  return n.filter(([id, sz]) => inShop(id, sz));
+}
+function renderShop(){
+  const order = Object.keys(SER), miss = new Map();
+  for (const a of ALL.filter(mine)) for (const [id, sz] of needs(a, st.all)) {
+    if (has(id, sz)) continue;
+    const k = key(id, sz);
+    if (!miss.has(k)) miss.set(k, {id, sz, f:[]});
+    miss.get(k).f.push(a.fam + " " + a.z.s);
+  }
+  const list = [...miss.values()].sort((x,y) => order.indexOf(x.id) - order.indexOf(y.id) || rank(x.sz) - rank(y.sz));
+  const body = !anyMine()
+    ? `<p class="need small" style="margin:0">Hake oben Deine Köder ab, dann steht hier, welche Haken Dir dafür noch fehlen.</p>`
+    : !list.length
+      ? `<p class="need small" style="margin:0">Für Deine Köder fehlt nichts.</p>`
+      : list.map(x => `<div class="need">${SER[x.id].name} <b>${x.sz}</b>${shopLink(x.id, x.sz)}<span class="f">für ${x.f.join(", ")}</span></div>`).join("");
+  $("shoplist").innerHTML = `
+    <section class="bx-group">
+      <p class="label" style="margin:10px 0 0">Fehlt für Deine Köder</p>
+      <div class="card">
+        <div class="bx-head"><span class="small" style="margin:0">${st.all ? "Alle Montagen laut Zeck" : "Rushka, Finesse Screw, Wide Gap"}</span>
+          <button type="button" class="chip sm" id="all-toggle" aria-pressed="${st.all}">Alle Montagen</button></div>
+        ${body}
+      </div>
+    </section>`;
+}
 function renderBox(){
-  $("box").innerHTML = BOX.map(g => `
+  const baits = `
+    <section class="bx-group">
+      <p class="label" style="margin:10px 0 0">Köder</p>
+      ${D.map(d => `
+        <div class="card">
+          <div class="bx-head"><div><span class="n">${d.fam}</span><span class="c">${d.sizes.filter(x => has("k", d.fam + "|" + x.s)).length}/${d.sizes.length}</span></div></div>
+          <div class="bx-sizes" role="group" aria-label="${d.fam}">
+            ${d.sizes.map(x => { const on = has("k", d.fam + "|" + x.s); return `<button type="button" class="size" data-k="${baitKey(d.fam, x.s)}" aria-pressed="${on}">${on ? "✓ " : ""}${x.s}</button>`; }).join("")}
+          </div>
+        </div>`).join("")}
+    </section>`;
+  renderShop();
+  $("box").innerHTML = baits + BOX.map(g => `
     <section class="bx-group">
       <p class="label" style="margin:10px 0 0">${g.grp}</p>
       ${g.items.map(s => `
@@ -439,9 +501,14 @@ function renderHook(){
   const misses = t.miss ? ALL.filter(a => !t.get(a.z)) : [];
   $("hlist").innerHTML = `
     <div class="hero ${t.cls}"><span class="k">${t.name}<span class="cnt">${hits.length} Köder</span>${tag(t.box, st.hs)}${shopLink(t.box, st.hs)}</span><span class="v">${st.hs}</span></div>
-    ${hits.map(a => `<button type="button" class="hit" data-fi="${a.fi}" data-si="${a.si}">
-      <span class="t">${a.fam} ${a.z.s}</span><span class="go" aria-hidden="true">›</span>
-      <span class="s">${fmt(a.z.g)} g · Klasse ${a.z.k}</span></button>`).join("")}
+    ${(() => {
+      const hit = a => `<button type="button" class="hit" data-fi="${a.fi}" data-si="${a.si}">
+        <span class="t${mine(a) ? " mine" : ""}">${a.fam} ${a.z.s}</span><span class="go" aria-hidden="true">›</span>
+        <span class="s">${fmt(a.z.g)} g · Klasse ${a.z.k}</span></button>`;
+      const my = hits.filter(mine), rest = hits.filter(a => !mine(a));
+      if (!my.length || !rest.length) return hits.map(hit).join("");
+      return `<p class="grp-h">Deine Köder</p>${my.map(hit).join("")}<p class="grp-h">Weitere</p>${rest.map(hit).join("")}`;
+    })()}
     ${t.hint ? `<p class="hint">${t.hint}</p>` : ""}
     ${misses.length ? `<p class="hint">${t.miss}: ${misses.map(a => a.fam + " " + a.z.s).join(", ")}</p>` : ""}`;
 }
@@ -458,6 +525,10 @@ function renderAll(){
 
 $("mode-bait").addEventListener("click", () => { st.mode = "bait"; save(); renderAll(); });
 $("mode-box").addEventListener("click", () => { st.mode = "box"; save(); renderAll(); });
+$("shoplist").addEventListener("click", e => {
+  if (!e.target.closest("#all-toggle")) return;
+  st.all = !st.all; save(); renderShop();
+});
 $("box").addEventListener("click", e => {
   const b = e.target.closest("button[data-k]"); if (!b) return;
   const k = b.dataset.k;
